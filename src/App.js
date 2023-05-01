@@ -11,18 +11,47 @@ import Navigation from "./components/Navigation";
 import Products from "./components/Products";
 import ShoppingCart from "./components/ShoppingCart";
 
+const writeToLocalStorage = (key, value) => {
+  window.localStorage.setItem(key, JSON.stringify(value));
+};
+
+const readFromLocalStorage = (key) => {
+  return JSON.parse(window.localStorage.getItem(key));
+};
+
+const LSkey = "g0223";
+const initializeCart = () => {
+  const cart = readFromLocalStorage(LSkey);
+  if (cart === null) {
+    return [];
+  } else {
+    return cart;
+  }
+};
+
 function App() {
   const [products, setProducts] = useState(data);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(/*[]*/ () => initializeCart());
 
   const addItem = (item) => {
     // verilen itemi sepete ekleyin
+    const newCart = [...cart, item];
+    setCart(newCart);
+    writeToLocalStorage(LSkey, newCart);
+  };
+
+  const removeItem = (id) => {
+    const newCart = [...cart];
+    let CartIndex = newCart.findIndex((i) => i.id === id);
+    newCart.splice(CartIndex, 1);
+    setCart(newCart);
+    writeToLocalStorage(LSkey, newCart);
   };
 
   return (
     <div className="App">
       <ProductContext.Provider value={{ products, addItem }}>
-        <CartContext.Provider value={{ cart, setCart }}>
+        <CartContext.Provider value={{ cart, removeItem }}>
           <Navigation /*cart={cart}*/ />
 
           {/* Routelar */}
