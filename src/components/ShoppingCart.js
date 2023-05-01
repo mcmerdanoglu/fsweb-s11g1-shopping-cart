@@ -4,7 +4,14 @@ import { ScCartCheckout } from "./scParts";
 // Components
 import Item from "./ShoppingCartItem";
 
-const ShoppingCart = (props) => {
+//Context
+import { useContext } from "react";
+import { CartContext } from "../contexts/CartContext";
+
+const ShoppingCart = (/*props*/) => {
+  const sepet = useContext(CartContext);
+  const { cart } = useContext(CartContext);
+
   const getCartTotal = () => {
     return props.cart
       .reduce((acc, value) => {

@@ -4,6 +4,10 @@ import styled from "styled-components";
 // Components
 import Product from "./Product";
 
+//Context
+import { useContext } from "react";
+import { ProductContext } from "../contexts/ProductContext";
+
 const ScProducts = styled.section`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -18,7 +22,10 @@ const ScProducts = styled.section`
   }
 `;
 
-const Products = (props) => {
+const Products = (/*props*/) => {
+  const urunler = useContext(ProductContext);
+  const { products, addItem } = useContext(ProductContext);
+
   return (
     <ScProducts>
       {props.products.map((product) => (
